@@ -2,16 +2,18 @@
 
 ## Start here
 
-Read [the product spec](docs/SPEC.md), [the implementation roadmap](docs/ROADMAP.md), and the assigned GitHub issue before coding. `docs/issues/` contains a planning snapshot of the issue bodies; GitHub holds live status and discussion. These documents describe future work, not implemented capabilities.
+Read [the Cal AI parity scope](docs/CAL-AI-PARITY.md), [the product spec](docs/SPEC.md), [the implementation roadmap](docs/ROADMAP.md), and the assigned GitHub issue before coding. The owner's updated direction is complete feature and UI/UX parity with **Cal AI 26.40.0 on iPhone, paid subscription**, followed by the requested additions. The original spec alone is not a full competitor inventory. `docs/issues/` contains a planning snapshot of the issue bodies; GitHub holds live status and discussion. These documents describe future work, not implemented capabilities.
 
 Use the existing repository and checkout. Cloud tasks are already isolated; do not create another repository or Git worktree unless the user explicitly requests it. Implement the assigned scope in a reviewable change, not the entire roadmap in one session.
 
 ## Order and gates
 
-1. Begin with F00: record decisions and verify access to macOS/Xcode, signing and a real iPhone.
+1. Begin the evidence-backed Cal AI feature and UI audit alongside F00. Record decisions and verify access to macOS/Xcode, signing and a real iPhone. Do not finalize client design or baseline priorities before the audit.
 2. Complete F01: prove backdated own-source HealthKit add, correction and deletion on a physical iPhone.
 3. Only then scaffold the web/backend and shared contracts. Follow explicit issue dependencies; phase numbers are planning groups.
-4. R009's durable reconciliation gate must pass before later feature polish. P2 enhancements are deferred; P1 priorities do not automatically become release blockers.
+4. R009's durable reconciliation gate must pass before later feature polish. Every verified Cal AI baseline feature is required for the parity release even if an older issue calls it P1/P2. Only genuine additions remain optional; record owner-approved deviations explicitly. Public marketing evidence alone cannot establish complete parity.
+
+Match observed user workflows, screen states and interaction friction as well as capabilities. A JSON copy/paste bridge is not equivalent to in-app photo capture. If parity needs an in-app AI provider, resolve cost/privacy/performance rather than deferring the baseline experience. Use original implementation/assets and side-by-side reference testing; never claim access to unobserved signed-in screens.
 
 If native hardware, credentials or provider configuration are unavailable, document the exact blocker and finish independent work within the assigned scope. Simulator checks cannot pass a physical-device gate. Never claim an unrun test passed.
 

@@ -4,6 +4,22 @@
 
 Planning baseline: [uploaded specification v1.0](https://github.com/MehdiMamas/MealCal/blob/main/docs/SPEC.md). Working product name in the spec is Nourish Ledger; MealCal remains the existing repository. This is a backlog and handoff, not an implementation-complete claim.
 
+## Updated goal: full Cal AI parity plus the requested additions
+
+The owner confirmed **Cal AI 26.40.0, iPhone, paid subscription** as the reference. Match all observed baseline features and UI/UX as closely as possible, then add the original spec's capabilities. Read [the parity scope and evidence limitations](https://github.com/MehdiMamas/MealCal/blob/main/docs/CAL-AI-PARITY.md); this update overrides older optional labels where they conflict with verified baseline functionality. The original spec alone is not a complete competitor inventory.
+
+- [ ] [P01 · #38](https://github.com/MehdiMamas/MealCal/issues/38) — audit every feature and map verified gaps to implementation issues; begin alongside F00.
+- [ ] [P02 · #39](https://github.com/MehdiMamas/MealCal/issues/39) — capture screen/state, navigation and interaction references before finalizing client UI.
+- [ ] [P03 · #40](https://github.com/MehdiMamas/MealCal/issues/40) — block parity release until all verified baseline workflows and reviewed visual/interaction expectations pass.
+
+The owner-supplied Gemini feature list is retained as [33 unverified claim groups](https://github.com/MehdiMamas/MealCal/blob/main/docs/CAL-AI-CLAIMS.md), not a verified product inventory.
+
+These audits require actual reference evidence. We have the owner's version/platform/subscription confirmation, but no signed-in app access or walkthrough; public research is currently blocked by outbound network policy. Candidate discovery areas are unverified, not a claim that Cal AI contains them.
+
+In-app photo/AI capture cannot remain a later optional enhancement if it is needed for a verified baseline workflow. External ChatGPT JSON handoff does not by itself match in-app UX. Resolve cost, privacy and fidelity, and promote any verified barcode/favorites/recipe/reminder gaps from the optional backlog. Add implementation issues after verification rather than inventing a feature inventory.
+
+Keep F01's independent real-iPhone HealthKit feasibility gate. Original T-01–T-20 acceptance remains in force; Q01 must also include the new parity gate. Scope exceptions require explicit owner agreement.
+
 ## Start here
 
 Start with [F00 · #1](https://github.com/MehdiMamas/MealCal/issues/1), then [F01 · #2](https://github.com/MehdiMamas/MealCal/issues/2). Prove historical own-source HealthKit add/edit/delete on a real iPhone before backend scaffolding. Linux/Windows development and simulator checks do not satisfy that gate. Work in the existing checkout; no new repository is needed.
@@ -28,7 +44,7 @@ P0 is required for the useful core; P1 is the next increment; P2 is optional. Ph
 
 The manual ChatGPT JSON bridge (R003) is moved forward after the basic ledger so reviewable proposals work without connector access. Direct MCP remains Phase 09. Minimal consumed amounts are part of the basic ledger; advanced leftovers and offline capture are P1. Basic sync truthfulness is mandatory in R009 even if the richer R025 log follows later.
 
-Do not silently promote all P1 work to launch blockers. Conversely, the spec’s Phase 04 retry gate and core before/after consumption acceptance still require evidence. The acceptance owner must explicitly record deferred advanced portions/offline/undo/email automation. T-07 is deferred unless deliberate legacy takeover is enabled; native Mail sharing is the default report delivery path.
+All verified Cal AI baseline features are release requirements even when older issues label them P1/P2; only additional features remain optional. Conversely, the spec’s Phase 04 retry gate and core before/after consumption acceptance still require evidence. The acceptance owner must explicitly record deferred advanced portions/offline/undo/email automation. T-07 is deferred unless deliberate legacy takeover is enabled; native Mail sharing is the default report delivery path.
 
 Hard gates: F00 records a usable physical-device path; F01 proves historical own-source operations; R009 demonstrates 100 retries/rapid changes without duplicates; R011/R012 prove idempotent import with zero Health writes; Q01 records enabled-scope acceptance and actual daily-use evidence.
 
@@ -116,13 +132,13 @@ Hard gates: F00 records a usable physical-device path; F01 proves historical own
 
 - [ ] [Q01 · #36](https://github.com/MehdiMamas/MealCal/issues/36) — **P0** Run release acceptance, recovery and a week of private daily use
 
-### Phase 12 — Optional backlog
+### Phase 12 — Additional backlog (baseline items must be promoted after audit)
 
-- [ ] [R026 · #32](https://github.com/MehdiMamas/MealCal/issues/32) — **P2** Add an optional in-app AI provider with approved estimates and cost controls
+- [ ] [R026 · #32](https://github.com/MehdiMamas/MealCal/issues/32) — **Parity review; P2 only for extras** Add an in-app AI provider with approved estimates and cost controls
 
 - [ ] [L01 · #31](https://github.com/MehdiMamas/MealCal/issues/31) — **P2** Support an explicitly approved legacy Health takeover workflow
 
-- [ ] [O01 · #24](https://github.com/MehdiMamas/MealCal/issues/24) — **P2** Add optional fast capture: voice, barcode, OCR, recipes and favorites
+- [ ] [O01 · #24](https://github.com/MehdiMamas/MealCal/issues/24) — **Parity review; P2 only for extras** Audit fast capture: voice, barcode, OCR, recipes and favorites
 
 - [ ] [O02 · #33](https://github.com/MehdiMamas/MealCal/issues/33) — **P2** Add share extensions, Shortcuts and capability-gated chat media upload
 
