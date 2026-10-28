@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # Working on MealCal
 
 ## Start here
