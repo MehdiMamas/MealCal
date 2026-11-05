@@ -12,7 +12,7 @@ Planning repository for a personal nutrition and health platform meant to replac
 ## Workflow
 - Read the parity scope, spec, roadmap and the assigned GitHub issue before coding.
 - Implement one issue's scope per reviewable change; link the issue in the PR and say which checks ran.
-- Intended stack (not scaffolded yet): SwiftUI/HealthKit, Next.js/TypeScript, Supabase. Do not invent toolchain versions; document real commands here once they exist.
+- Intended stack (not scaffolded yet): localhost web app + native HealthKit sync app; hosting/backend re-decided in R001 (earlier plan, provisional: Next.js/TypeScript, Supabase). Do not invent toolchain versions; document real commands here once they exist.
 
 ## Gotchas
 - Do not commit personal reports, real health fixtures, secrets or provider tokens.

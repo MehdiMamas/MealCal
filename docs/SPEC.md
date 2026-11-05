@@ -15,9 +15,9 @@
 
 Build a **single-user, privacy-first app** with:
 
-- **iOS:** Native SwiftUI client, with a native HealthKit adapter; camera/photo library, before-and-after meal images, offline queue, local notification and share extension later.
-- **Web:** Next.js/TypeScript application hosted on Vercel, usable from a Windows PC and iPhone browser for logs, corrections, imports, dashboards, photo uploads, and exports.
-- **Backend:** Server endpoints + Supabase PostgreSQL/Auth (free tier for personal use), plus private image object storage (Cloudflare R2 recommended for more free capacity; Supabase Storage as simpler limited alternative).
+- **Web app (the only UI):** Responsive Next.js/TypeScript application that runs locally on the owner's machine and is reached privately (for example Tailscale Serve, never public), from the PC and the iPhone browser, for logs, corrections, imports, dashboards, camera/photo upload, and exports. Hosting on Vercel in the earlier plan is provisional and is re-decided in R001 ([#6](https://github.com/MehdiMamas/MealCal/issues/6)).
+- **HealthKit sync app (native iOS):** A small native SwiftUI app with the HealthKit capability. It pulls pending changes, writes, corrects and deletes its own Health samples, acknowledges them, and shows sync status and permissions only. It has no Today/Diary/Add screens; those live in the web app.
+- **Backend (provisional, re-decided in R001 [#6](https://github.com/MehdiMamas/MealCal/issues/6)):** Server endpoints + Supabase PostgreSQL/Auth (free tier for personal use), plus private image object storage (Cloudflare R2 recommended for more free capacity; Supabase Storage as simpler limited alternative).
 - **ChatGPT-first AI:** An MCP-compatible remote server with strongly typed nutrition tools, built now; connect it when the actual ChatGPT account supports the required writable custom app actions. Until then, structured JSON handoff/import works without subscribing to a second AI service.
 - **Health synchronization:** Persistent desired-state reconciliation jobs, executed by the authorized iOS app at every launch/foreground, with best-effort background triggers. Edits can target historical dates; there is no midnight lock.
 - **Data ownership:** Versioned records, exportable structured JSON/CSV, beautifully formatted PDF reports, explicit import provenance, a correction history, reversible deletions where feasible, and zero silent double-counting.
@@ -119,10 +119,10 @@ Build a **single-user, privacy-first app** with:
  meal ledger    object storage       + email          desired changes
     ^                ^                  ^                 |
     |                |                  |                 v
-    +------- Web app: Next.js on Vercel ------+      iPhone sync client
-    |        (PC/browser, no HealthKit)              |      |
-    +------- iOS app: SwiftUI ----------------------+      v
-       (photo camera, local drafts, notifications)     Apple HealthKit
+    +------- Web app: Next.js (local; hosting provisional) ------+      HealthKit sync app
+    |        (PC/iPhone browser, no HealthKit)       |      |
+    +------- iOS sync app: SwiftUI -----------------+      v
+       (sync, status and permissions only)             Apple HealthKit
                                                       read/write/delete
 ```
 
@@ -166,17 +166,28 @@ nutrition-platform/
 
 ### Client design choice
 
-Prefer native SwiftUI for iPhone instead of starting with a web wrapper or React Native HealthKit bridge. SwiftUI gives the simplest, clearest access to HealthKit, camera, secure local queue and iOS permissions. Share an API and design tokens with the Next.js web UI; **do not attempt to share the HealthKit layer**. Web remains fully useful independently.
+The web app is the UI. The native iPhone app is limited to HealthKit sync: SwiftUI gives the simplest, clearest access to HealthKit and iOS permissions, and avoids a web wrapper or React Native HealthKit bridge. Share the API with the web app; **do not attempt to share the HealthKit layer**. Web remains fully useful independently.
+
+#### Why native (re-checked 2026-11-05)
+
+HealthKit has no web or JavaScript API, and writing, correcting and deleting own samples needs an app with the HealthKit capability. Sources:
+
+- HealthKit platforms are iOS, iPadOS, Mac Catalyst, macOS, visionOS and watchOS: https://developer.apple.com/documentation/healthkit
+- "Before you can use HealthKit, you must enable the HealthKit capabilities for your app": https://developer.apple.com/documentation/healthkit/setting-up-healthkit
+- "Your app can delete only those objects that it has previously saved to the HealthKit store": https://developer.apple.com/documentation/healthkit/hkhealthstore/delete(_:withcompletion:)-17hzm . Samples written by another tool, such as a Shortcut, cannot later be corrected or deleted by MealCal.
+- Installing on your own iPhone needs only a free Apple Account in Xcode (Personal Team; up to 3 devices, expiring after 7 days): https://developer.apple.com/support/compare-memberships/ . Whether HealthKit works under a Personal Team is not confirmed there and is checked in F00.
 
 ### Development hardware
 
-Build the Next.js web/backend on Windows. Native HealthKit work needs Xcode/macOS and must be tested on a **real iPhone**. A Mac or legitimate macOS build service is a genuine requirement to plan for; having an Apple Developer membership alone does not make Windows capable of compiling/signing a SwiftUI iOS app. For private use choose direct development/Ad Hoc distribution where practicable; TestFlight is an alternate with recurring 90-day build expiry.
+Build the Next.js web/backend on Windows. The native HealthKit sync app needs Xcode/macOS and must be tested on a **real iPhone**. A Mac or legitimate macOS build service is a genuine requirement to plan for; having an Apple Developer membership alone does not make Windows capable of compiling/signing a SwiftUI iOS app. For private use choose direct development/Ad Hoc distribution where practicable; TestFlight is an alternate with recurring 90-day build expiry.
 
 ---
 
 ## 5. Screens and interaction specification
 
-### iOS tabs
+### Web app screens (moved from the former native tabs)
+
+These run in the web app. The native sync app shows only sync status and permissions.
 
 1. **Today:** Eaten, targets, protein/carbs/fat, fiber, sodium, **potassium**, energy burned (toggle), net energy (toggle), exercise activity and pending Health sync count.
 2. **Diary:** Date switcher (past/future navigation), meal timeline and multi-food cards. Edit/delete/duplicate/log later, no midnight restriction.
@@ -702,6 +713,8 @@ Include `report_version` and `generated_at`. Regenerating a historical report af
 
 ## 16. Hosting and cost strategy
 
+> **Provisional:** Vercel, Supabase and R2 below are the earlier plan and are re-decided in R001 ([#6](https://github.com/MehdiMamas/MealCal/issues/6)), now that the web app runs locally. The text is kept for that comparison.
+
 The objective is **$0 incremental hosting per month under free-tier usage**, *not* a guarantee that every provider offers unlimited free storage forever. Paid Apple Developer membership is already assumed. Monitor terms and caps at deployment.
 
 | Component | Choice | Indicative personal-use cost / limit | Notes |
@@ -761,7 +774,7 @@ The objective is **$0 incremental hosting per month under free-tier usage**, *no
 
 ### Phase 01 — HealthKit proof of concept FIRST (2–4 days)
 
-- [ ] Create minimal SwiftUI app with HealthKit entitlement and explicit permissions.
+- [ ] Create minimal SwiftUI HealthKit sync app with HealthKit entitlement and explicit permissions.
 - [ ] Save a **test** meal with calories, protein, sodium and potassium for a historical date, on physical phone.
 - [ ] Read back own-source sample UUID/type/date/value and source revision.
 - [ ] Replace past potassium sample by verified own-source delete + save; verify daily Health quantities.
@@ -782,10 +795,10 @@ The objective is **$0 incremental hosting per month under free-tier usage**, *no
 
 - [ ] Build diary calendar, add/edit/delete meals, food line items, servings and nutrition totals.
 - [ ] Add revisions, tombstones, full history and optimistic concurrency.
-- [ ] Build SwiftUI Today/Diary/Add screens against same backend.
+- [ ] Build the Today/Diary/Add screens in the web app (responsive, used from the iPhone browser) against the same backend.
 - [ ] Confirm historical edits invalidate cache and update every chart/total.
 - [ ] Implement manual entry before any AI integration.
-- **Gate:** identical meal IDs and corrected totals in PC and iPhone web/native; historical data changes never stale.
+- **Gate:** identical meal IDs and corrected totals in PC and iPhone browser; historical data changes never stale.
 
 ### Phase 04 — Durable HealthKit sync engine (4–8 days)
 
@@ -904,7 +917,7 @@ The objective is **$0 incremental hosting per month under free-tier usage**, *no
 - [ ] Create a private GitHub repository named after the product.
 - [ ] Add this spec to `docs/SPEC.md` and a `PROGRESS.md` file.
 - [ ] Check available Mac/Xcode/iPhone build process and Apple team signing.
-- [ ] Create SwiftUI sandbox app and HealthKit capability.
+- [ ] Create SwiftUI HealthKit sync sandbox app and HealthKit capability.
 - [ ] Request read/write permissions for `dietaryEnergyConsumed`, `dietaryProtein`, `dietarySodium`, `dietaryPotassium`.
 - [ ] Write a test meal to a **past date** (not today), read its Apple Health data, capture UUIDs.
 - [ ] Edit the test meal, delete only its original app-owned quantities and save updated ones.
@@ -927,8 +940,8 @@ The objective is **$0 incremental hosting per month under free-tier usage**, *no
 
 ### Defaults chosen for v1
 
-- Native iOS SwiftUI rather than a PWA-only solution.
-- Next.js on Vercel; PostgreSQL/Supabase; optional R2 private photo storage.
+- Localhost web app as the only UI, plus a native SwiftUI HealthKit sync app (sync, status and permissions only) rather than a PWA-only solution.
+- Provisional, re-decided in R001 ([#6](https://github.com/MehdiMamas/MealCal/issues/6)): Next.js on Vercel; PostgreSQL/Supabase; optional R2 private photo storage.
 - Single-user system with MFA, no public sign-up.
 - All historical dates editable; no midnight cutoff.
 - Never import Cal AI food history into HealthKit automatically.
