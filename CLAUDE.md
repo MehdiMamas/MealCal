@@ -32,7 +32,7 @@ If native hardware, credentials or provider configuration are unavailable, docum
 
 ## Practical constraints
 
-The intended stack is SwiftUI/HealthKit, Next.js/TypeScript, Supabase PostgreSQL/Auth and private object storage (R2 preferred; Supabase Storage is an alternative). Do not invent a toolchain version before scaffolding; pin supported versions and document the actual commands then. Keep HealthKit native rather than sharing it with web code.
+The intended stack is a localhost web app (Next.js/TypeScript) plus a native SwiftUI HealthKit sync app (sync, status and permissions only); hosting and backend are re-decided in R001 (#6). The earlier plan, provisional until then, was Supabase PostgreSQL/Auth and private object storage (R2 preferred; Supabase Storage is an alternative) on Vercel. Do not invent a toolchain version before scaffolding; pin supported versions and document the actual commands then. Keep HealthKit native rather than sharing it with web code.
 
 The repository was public at planning time, while the spec requests private use. F00 must record the owner's visibility decision. Do not commit personal reports, real health fixtures, secrets or provider tokens. Use synthetic/redacted fixtures. No actual Cal AI PDF has been supplied to this repository.
 
