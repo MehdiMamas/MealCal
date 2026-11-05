@@ -30,7 +30,7 @@ Read `CLAUDE.md`, the source spec, and the assigned issue. Check dependencies an
 
 - The app ledger owns meals, consumed quantities, media, revisions and provenance. ChatGPT proposes structured operations; the backend records authorized mutations.
 
-- Only native iOS reads/writes HealthKit. Database success is `app_saved`; Health remains pending until device reconciliation and acknowledgment.
+- Only the native iOS HealthKit sync app reads/writes HealthKit. Database success is `app_saved`; Health remains pending until device reconciliation and acknowledgment.
 
 - Historical edits must reconcile only identified app-owned samples. Cal AI imports remain `never_legacy` and cause zero Health writes.
 
@@ -50,7 +50,7 @@ Hard gates: F00 records a usable physical-device path; F01 proves historical own
 
 ### Phase 00 — Decisions and device readiness
 
-- [ ] [F00 · #1](https://github.com/MehdiMamas/MealCal/issues/1) — **P0** Record product decisions and verify the native development path
+- [ ] [F00 · #1](https://github.com/MehdiMamas/MealCal/issues/1) — **P0** Record product decisions and verify the native HealthKit sync app development path
 
 ### Phase 01 — Physical-device HealthKit proof — hard gate
 
@@ -58,13 +58,13 @@ Hard gates: F00 records a usable physical-device path; F01 proves historical own
 
 ### Phase 02 — Scaffold, dates, schema, authentication and privacy
 
-- [ ] [F02 · #3](https://github.com/MehdiMamas/MealCal/issues/3) — **P0** Scaffold the monorepo and development checks after the HealthKit gate
+- [ ] [F02 · #3](https://github.com/MehdiMamas/MealCal/issues/3) — **P0** Scaffold the monorepo (localhost web app plus HealthKit sync app) and development checks after the HealthKit gate
 
 - [ ] [R021 · #4](https://github.com/MehdiMamas/MealCal/issues/4) — **P0** Implement diary date, timezone and DST rules
 
 - [ ] [F03 · #5](https://github.com/MehdiMamas/MealCal/issues/5) — **P0** Define versioned contracts and the canonical PostgreSQL schema
 
-- [ ] [R001 · #6](https://github.com/MehdiMamas/MealCal/issues/6) — **P0** Set up private single-user authentication and deployment
+- [ ] [R001 · #6](https://github.com/MehdiMamas/MealCal/issues/6) — **P0** Set up private single-user authentication and deployment (hosting and backend stack, including Vercel, Supabase and R2, are provisional and re-decided here)
 
 - [ ] [R023 · #7](https://github.com/MehdiMamas/MealCal/issues/7) — **P0** Enforce ownership, privacy consent and secure data access
 
@@ -74,7 +74,7 @@ Hard gates: F00 records a usable physical-device path; F01 proves historical own
 
 - [ ] [R007 · #9](https://github.com/MehdiMamas/MealCal/issues/9) — **P0** Implement the nutrient registry, units and evidence-aware write policy
 
-- [ ] [R002 · #10](https://github.com/MehdiMamas/MealCal/issues/10) — **P0** Build the shared manual meal ledger on web and native iOS
+- [ ] [R002 · #10](https://github.com/MehdiMamas/MealCal/issues/10) — **P0** Build the shared manual meal ledger in the web app (Today/Diary/Add; the native app only syncs)
 
 - [ ] [R010 · #11](https://github.com/MehdiMamas/MealCal/issues/11) — **P0** Recompute historical days and invalidate derived totals after every edit
 
@@ -82,7 +82,7 @@ Hard gates: F00 records a usable physical-device path; F01 proves historical own
 
 ### Phase 04 — Production Health adapter, durable reconciliation and status
 
-- [ ] [R008 · #12](https://github.com/MehdiMamas/MealCal/issues/12) — **P0** Build the production native HealthKit adapter and permissions
+- [ ] [R008 · #12](https://github.com/MehdiMamas/MealCal/issues/12) — **P0** Build the production native HealthKit sync app adapter and permissions
 
 - [ ] [R009 · #13](https://github.com/MehdiMamas/MealCal/issues/13) — **P0** Reconcile historical HealthKit corrections and deletions durably
 
@@ -96,7 +96,7 @@ Hard gates: F00 records a usable physical-device path; F01 proves historical own
 
 - [ ] [R019 · #18](https://github.com/MehdiMamas/MealCal/issues/18) — **P1** Model per-food consumption, leftovers and later servings
 
-- [ ] [R024 · #19](https://github.com/MehdiMamas/MealCal/issues/19) — **P1** Persist offline iOS drafts and safely replay changes
+- [ ] [R024 · #19](https://github.com/MehdiMamas/MealCal/issues/19) — **P1** Persist offline drafts (web app, with the sync app's outbox) and safely replay changes
 
 ### Phase 06 — Protected legacy migration
 
@@ -210,7 +210,7 @@ Run the original steps/outcomes in spec §19, not merely the short IDs below. Q0
 
 - Repository is currently public (observed during planning), while the spec requests private use. F00 records the owner’s visibility decision; do not change visibility or commit actual health data implicitly.
 
-- Confirm Mac/Xcode, physical iPhone, Apple team/bundle identifier and distribution path before native implementation.
+- Confirm Mac/Xcode, physical iPhone, Apple team/bundle identifier and distribution path before native sync app implementation. Direction: localhost web app is the only UI (private access, e.g. Tailscale Serve); hosting (Vercel/Supabase/R2 versus local) is re-decided in R001 ([#6](https://github.com/MehdiMamas/MealCal/issues/6)).
 
 - Confirm timezone, storage provider, MFA recovery, consent scopes and nutrient write policy; use spec defaults until an actual decision is needed.
 
